@@ -1,0 +1,59 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+myenv/
+env/
+venv/
+*.env
+*.egg-info/
+
+# Django
+*.log
+*.sqlite3
+db.sqlite3
+/static/
+media/
+
+# React
+node_modules/
+build/
+dist/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage directory used by tools like pytest
+.coverage
+.coverage.*
+
+# Pytest
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Python virtual environments
+*.venv/
+venv/
+env/
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
+
+# NPM logs
+npm-debug.log
+yarn-error.log
+
+# Ignore all build artifacts
+build/

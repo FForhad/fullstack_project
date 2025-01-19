@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api/todos/'; // Update the URL if necessary
+const API_URL = `${process.env.REACT_APP_API_URL}api/todos/`; // Correct way to concatenate
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -9,10 +9,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Fetch all todos when the component is mounted
   useEffect(() => {
     fetchTodos();
   }, []);
 
+  // Fetch todos from the API
   const fetchTodos = async () => {
     setLoading(true);
     setError(null);
@@ -20,12 +22,14 @@ function App() {
       const response = await axios.get(API_URL);
       setTodos(response.data);
     } catch (err) {
+      console.error('Error fetching todos:', err); // Log the full error
       setError('Error fetching todos. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
+  // Add a new todo
   const addTodo = async () => {
     if (!newTodo.trim()) {
       setError('Todo cannot be empty.');
@@ -36,22 +40,25 @@ function App() {
     setError(null);
     try {
       const response = await axios.post(API_URL, { title: newTodo, completed: false });
-      setTodos([...todos, response.data]);
+      setTodos(prevTodos => [...prevTodos, response.data]); // Use functional update
       setNewTodo('');
     } catch (err) {
+      console.error('Error adding todo:', err); // Log the full error
       setError('Error adding todo. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  // Toggle the completed status of a todo
   const toggleTodo = async (id, completed) => {
     setLoading(true);
     setError(null);
     try {
       await axios.patch(`${API_URL}${id}/`, { completed: !completed });
-      fetchTodos();
+      fetchTodos(); // Re-fetch todos to update the list
     } catch (err) {
+      console.error('Error updating todo:', err); // Log the full error
       setError('Error updating todo. Please try again.');
     } finally {
       setLoading(false);
@@ -92,7 +99,7 @@ function App() {
                   textDecoration: todo.completed ? 'line-through' : 'none',
                   cursor: 'pointer',
                 }}
-                onClick={() => toggleTodo(todo.id, todo.completed)}
+                onClick={() => toggleTodo(todo.id, todo.completed)} // Toggle todo completion
               >
                 {todo.title}
               </span>
